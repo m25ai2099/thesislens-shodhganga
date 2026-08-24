@@ -1,0 +1,9 @@
+data/*.parquet
+data/*.csv
+data/*.npy
+data/*.index
+.env
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.streamlit/secrets.toml
