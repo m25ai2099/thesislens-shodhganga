@@ -1,9 +1,11 @@
 import streamlit as st
+from src.sidebar import render_sidebar
 from src.data_loader import load_data
 from src.duplicator import check_duplicate
 
 st.set_page_config(page_title="Duplication Detector",
                    page_icon="🔁", layout="wide")
+render_sidebar()
 st.title("🔁 Duplication Detector")
 st.markdown("Check if your proposed thesis topic already exists in Shodhganga")
 st.markdown("---")

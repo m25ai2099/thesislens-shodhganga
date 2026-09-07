@@ -2,13 +2,28 @@ import pandas as pd
 from collections import Counter
 import re
 
-def extract_keywords(text, min_length=4):
+def extract_keywords(text, min_length=5):
     """Extract meaningful keywords from text."""
     stop_words = {
+        # Common English words
         "this", "that", "with", "from", "have", "been",
         "were", "they", "their", "which", "study", "research",
         "using", "based", "analysis", "india", "indian",
-        "data", "also", "used", "results", "found"
+        "data", "also", "used", "results", "found", "show",
+        # Words appearing in abstracts but not meaningful
+        "para", "these", "between", "chapter", "thesis",
+        "different", "within", "among", "other", "more",
+        "than", "such", "each", "than", "when", "over",
+        "after", "before", "about", "through", "under",
+        "while", "where", "there", "those", "both",
+        "paper", "present", "proposed", "method", "approach",
+        "work", "make", "made", "into", "only", "then",
+        "three", "four", "five", "first", "second", "third",
+        "however", "therefore", "thus", "hence", "further",
+        "well", "high", "large", "small", "good", "many",
+        "various", "significant", "important", "number",
+        "total", "overall", "general", "specific", "given",
+        "level", "type", "form", "case", "part", "same"
     }
     words = re.findall(r'\b[a-zA-Z]+\b', text.lower())
     return [w for w in words

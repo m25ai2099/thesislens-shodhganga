@@ -1,8 +1,10 @@
 import streamlit as st
+from src.sidebar import render_sidebar
 from src.data_loader import load_data
 from src.searcher import search
 
 st.set_page_config(page_title="Semantic Search", page_icon="🔍", layout="wide")
+render_sidebar()
 st.title("🔍 Semantic Search")
 st.markdown("Search Shodhganga theses by meaning — not just keywords")
 st.markdown("---")

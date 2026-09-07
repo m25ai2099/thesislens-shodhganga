@@ -1,9 +1,11 @@
 import streamlit as st
 import plotly.express as px
+from src.sidebar import render_sidebar
 from src.data_loader import load_data
 from src.bibliometrics import by_year, by_institution, by_subject
 
 st.set_page_config(page_title="Bibliometrics", page_icon="📊", layout="wide")
+render_sidebar()
 st.title("📊 Bibliometric Analysis")
 st.markdown("Research output trends across Indian universities and subjects")
 st.markdown("---")

@@ -2,11 +2,13 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
+from src.sidebar import render_sidebar
 from src.data_loader import load_data
 from src.mapper import get_top_concepts, get_concept_cooccurrence
 
 st.set_page_config(page_title="Variable Map",
                    page_icon="🗺️", layout="wide")
+render_sidebar()
 st.title("🗺️ Variable Mapping")
 st.markdown("Visualise researched concepts across the Shodhganga corpus")
 st.markdown("---")
