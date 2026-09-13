@@ -11,27 +11,89 @@ def extract_keywords(text, min_length=5):
         "were", "they", "their", "which", "study", "research",
         "using", "based", "analysis", "india", "indian",
         "data", "also", "used", "results", "found", "show",
-        # Words appearing in abstracts but not meaningful
+        "shows", "shown", "studies", "researcher", "researchers",
+
+        # Abstract structure words
         "para", "these", "between", "chapter", "thesis",
         "different", "within", "among", "other", "more",
-        "than", "such", "each", "when", "over",
-        "after", "before", "about", "through", "under",
-        "while", "where", "there", "those", "both",
-        "paper", "present", "proposed", "method", "approach",
-        "work", "make", "made", "into", "only", "then",
-        "three", "four", "five", "first", "second", "third",
-        "however", "therefore", "thus", "hence", "further",
-        "well", "high", "large", "small", "good", "many",
-        "various", "significant", "important", "number",
-        "total", "overall", "general", "specific", "given",
-        "level", "type", "form", "case", "part", "same",
-        "study", "studies", "paper", "papers", "show",
-        "shows", "shown", "model", "models", "effect",
-        "effects", "result", "results", "group", "groups",
-        "value", "values", "score", "scores", "rate", "rates",
-        "measure", "measures", "factor", "factors", "sample",
-        "samples", "table", "figure", "section", "chapter"
+        "than", "such", "each", "when", "over", "after",
+        "before", "about", "through", "under", "while",
+        "where", "there", "those", "both", "paper", "papers",
+        "present", "proposed", "method", "approach", "work",
+        "make", "made", "into", "only", "then", "three",
+        "four", "five", "first", "second", "third", "however",
+        "therefore", "thus", "hence", "further", "well",
+        "high", "large", "small", "good", "many", "various",
+        "significant", "important", "number", "total",
+        "overall", "general", "specific", "given", "level",
+        "type", "form", "case", "part", "same",
+
+        # Common academic words not useful as concepts
+        "model", "models", "effect", "effects", "result",
+        "group", "groups", "value", "values", "score",
+        "scores", "rate", "rates", "measure", "measures",
+        "factor", "factors", "sample", "samples", "table",
+        "figure", "section", "review", "objective", "aims",
+        "conclusion", "conclusions", "abstract", "introduction",
+        "background", "methodology", "methods", "technique",
+        "techniques", "approach", "approaches", "framework",
+        "system", "systems", "application", "applications",
+        "performance", "evaluation", "experiment", "experiments",
+        "implementation", "algorithm", "algorithms","available", "conditions", "condition", "range",
+        "power", "fenix", "order", "based", "given",
+        "place", "thing", "things", "point", "points",
+        "areas", "area", "field", "fields", "focus",
+        "report", "reports", "noted", "noted", "known",
+        "related", "relevant", "regard", "aspect", "aspects",
+        "terms", "issue", "issues", "needs", "need",
+        "shows", "address", "addresses", "consider",
+        "considered", "provide", "provided", "according",
+        "including", "included", "include", "addition",
+        "added", "possible", "likely", "often", "usually",
+        "particularly", "especially", "mainly", "mostly",
+        "widely", "commonly", "typically", "generally",
+
+        # Language/nationality words
+        "chinese", "english", "hindi", "tamil", "telugu",
+        "french", "german", "spanish", "japanese", "korean",
+        "american", "british", "european", "asian", "global",
+        "international", "national", "regional", "local",
+
+        # Time words
+        "during", "period", "years", "months", "days",
+        "recent", "current", "previous", "future", "early",
+        "later", "since", "until", "year", "month", "time",
+
+        # Generic descriptors
+        "developed", "developing", "improve", "improved",
+        "improving", "increase", "increased", "decrease",
+        "decreased", "compare", "compared", "presented",
+        "existing", "novel", "effective", "efficient",
+        "accurate", "robust", "optimal", "traditional",
+        "conventional", "advanced",
+
+        # Computer science specific noise
+        "science", "computer", "networks", "network",
+        "sequence", "learning", "deep", "machine",
+
+        # Biology/medicine specific noise
+        "species", "cells", "protein", "proteins", "genes",
+        "mouse", "human", "patients", "clinical", "medical",
+
+        # Common verbs
+        "demonstrate", "demonstrates", "indicated",
+        "indicates", "suggested", "suggests", "provide",
+        "provides", "propose", "achieve", "achieves",
+        "achieved", "obtain", "obtained",
+
+        # Filler words
+        "across", "along", "around", "without", "against",
+        "above", "below", "beside", "beyond", "because",
+        "although", "despite", "whereas", "whether",
+        "could", "would", "should", "might", "shall",
+        "will", "does", "doing", "done", "being"
     }
+
     words = re.findall(r'\b[a-zA-Z]+\b', text.lower())
     return [w for w in words
             if len(w) >= min_length and w not in stop_words]
@@ -39,7 +101,6 @@ def extract_keywords(text, min_length=5):
 
 def get_top_concepts(df, top_n=30):
     """Get most frequent concepts across all abstracts."""
-    # Safety check for empty dataframe
     if df is None or len(df) == 0:
         return []
 
@@ -56,7 +117,6 @@ def get_top_concepts(df, top_n=30):
 
 def get_concept_cooccurrence(df, top_n=20):
     """Find concepts that appear together frequently."""
-    # Safety check for empty dataframe
     if df is None or len(df) == 0:
         return pd.DataFrame()
 
@@ -85,10 +145,7 @@ def get_concept_cooccurrence(df, top_n=20):
 
 
 def get_discipline_concepts(df, discipline, top_n=20):
-    """
-    Get top concepts for a specific discipline.
-    Used for cross-discipline comparison.
-    """
+    """Get top concepts for a specific discipline."""
     if df is None or len(df) == 0:
         return []
 
@@ -102,8 +159,8 @@ def get_discipline_concepts(df, discipline, top_n=20):
 def compare_disciplines(df, disciplines=None, top_n=15):
     """
     Compare top concepts across multiple disciplines.
-    Returns a DataFrame with disciplines as columns
-    and concepts as rows — useful for heatmap comparison.
+    Returns DataFrame with disciplines as columns,
+    concepts as rows.
     """
     if df is None or len(df) == 0:
         return pd.DataFrame()
@@ -122,7 +179,6 @@ def compare_disciplines(df, disciplines=None, top_n=15):
     if not all_concepts:
         return pd.DataFrame()
 
-    # Build comparison matrix
     comparison = pd.DataFrame(
         index=list(all_concepts),
         columns=disciplines
@@ -132,7 +188,6 @@ def compare_disciplines(df, disciplines=None, top_n=15):
         for concept, freq in concepts.items():
             comparison.loc[concept, disc] = freq
 
-    # Sort by total frequency
     comparison["total"] = comparison.sum(axis=1)
     comparison = comparison.sort_values(
         "total", ascending=False
